@@ -186,6 +186,20 @@ p {
   backdrop-filter: blur(16px) saturate(140%);
 }
 
+/* ── Touch-screen graphics budget ─────────────────────────────────────────
+   Phones give each tab a small graphics-memory budget, and iOS kills the page
+   when it runs out (large, high-density screens like the iPhone Pro Max hit it
+   first). Background blur is among the most expensive effects, so touch devices
+   get plain translucency instead. */
+@media (pointer: coarse) {
+  *,
+  *::before,
+  *::after {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+
 /* ── Buttons ──────────────────────────────────────────────────────────── */
 
 .btn {

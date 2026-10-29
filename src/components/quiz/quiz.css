@@ -225,6 +225,8 @@
 
 .meter {
   gap: 14px;
+  /* The heart's glow is wider than narrow cards; keep it inside so phones never scroll sideways. */
+  overflow: hidden;
 }
 
 .meter__title {
@@ -237,16 +239,28 @@
 
 .meter__heart {
   position: relative;
+  isolation: isolate;
   width: min(300px, 62vw, 40svh);
   aspect-ratio: 1;
+}
+
+/* The glow is a gradient behind the heart, not a blur filter: the liquid animates every
+   frame, and re-blurring it each frame is what runs phones out of graphics memory. */
+.meter__heart::before {
+  content: '';
+  position: absolute;
+  inset: -22%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 130, 178, 0.5), rgba(255, 130, 178, 0.14) 60%, transparent);
+  transition: background 0.4s var(--ease-out), transform 0.5s var(--ease-spring);
 }
 
 .meter__heart svg {
   width: 100%;
   height: 100%;
-  /* The wide wave paths must not extend the scrollable area (the glow is a filter, so it still shows). */
+  /* The wide wave paths must not extend the scrollable area. */
   overflow: hidden;
-  filter: drop-shadow(0 0 30px rgba(255, 130, 178, 0.45));
 }
 
 .meter__shell {
@@ -292,16 +306,17 @@
   animation: meter-overload 0.12s linear infinite;
 }
 
-.meter__heart--overload svg {
-  filter: drop-shadow(0 0 40px rgba(255, 229, 160, 0.95));
+.meter__heart--overload::before {
+  background: radial-gradient(closest-side, rgba(255, 229, 160, 0.85), rgba(255, 130, 178, 0.25) 60%, transparent);
 }
 
 .meter__heart--final {
   animation: heartbeat 1s ease-in-out infinite;
 }
 
-.meter__heart--final svg {
-  filter: drop-shadow(0 0 50px rgba(255, 130, 178, 1)) drop-shadow(0 0 90px rgba(255, 229, 160, 0.7));
+.meter__heart--final::before {
+  transform: scale(1.25);
+  background: radial-gradient(closest-side, rgba(255, 248, 245, 0.75), rgba(255, 130, 178, 0.55) 40%, rgba(255, 229, 160, 0.2) 70%, transparent);
 }
 
 .meter__heart--final .meter__value {

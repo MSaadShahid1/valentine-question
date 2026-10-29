@@ -266,3 +266,18 @@
 .bg[data-mood='dawn'] .bg__vignette {
   opacity: 0.18;
 }
+
+/* Phones: the screen-sized light blobs and clouds stay still, so they're painted once
+   into the sky instead of each holding its own full-size GPU texture; the spinning sun
+   rays and the film grain (a full-screen blend layer) are dropped. See globals.css. */
+@media (pointer: coarse), (max-width: 640px) {
+  .bg__blob,
+  .bg__cloud {
+    animation: none;
+  }
+
+  .bg__rays,
+  .bg__grain {
+    display: none;
+  }
+}

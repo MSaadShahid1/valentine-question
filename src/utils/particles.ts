@@ -59,6 +59,30 @@ export interface Origin {
   y: number;
 }
 
+export type FlashKind = 'hearts' | 'yes';
+
+const FLASH_SECONDS: Record<FlashKind, number> = { hearts: 1.3, yes: 1.9 };
+
+interface Flash {
+  kind: FlashKind;
+  x: number;
+  y: number;
+  age: number;
+  life: number;
+}
+
+/** Linear interpolation through keyframe `values` placed at `times` (0…1). */
+function keyframe(t: number, times: number[], values: number[]) {
+  if (t <= times[0]) return values[0];
+  for (let i = 1; i < times.length; i += 1) {
+    if (t <= times[i]) {
+      const local = (t - times[i - 1]) / (times[i] - times[i - 1]);
+      return values[i - 1] + (values[i] - values[i - 1]) * local;
+    }
+  }
+  return values[values.length - 1];
+}
+
 const SPRITE_SIZE = 64;
 
 function makeCanvas(size = SPRITE_SIZE) {
@@ -167,6 +191,7 @@ function dotSprite(color: string) {
 export class ParticleEngine {
   private ctx: CanvasRenderingContext2D;
   private particles: Particle[] = [];
+  private flashes: Flash[] = [];
   private frame = 0;
   private last = 0;
   private dpr = 1;
@@ -207,6 +232,7 @@ export class ParticleEngine {
 
   clear() {
     this.particles = [];
+    this.flashes = [];
     cancelAnimationFrame(this.frame);
     this.frame = 0;
     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -521,12 +547,86 @@ export class ParticleEngine {
     this.frame = requestAnimationFrame(this.tick);
   }
 
+  /**
+   * Full-screen transition flash (light wash, rays, a heart blooming toward the
+   * viewer). Drawn on this canvas rather than as DOM layers: scaling a big
+   * element to many times the screen size costs phones hundreds of MB of
+   * graphics memory, which is enough for iOS to kill the tab.
+   */
+  flash(kind: FlashKind, origin: Origin) {
+    this.flashes.push({ kind, x: origin.x, y: origin.y, age: 0, life: FLASH_SECONDS[kind] });
+    if (!this.reduced) {
+      const colors = kind === 'yes' ? [...this.palette.hearts, '#FFE5A0'] : this.palette.hearts;
+      this.radial('heart', colors, origin, 14, { speed: [520, 860], size: [26, 40], life: [0.7, 1.05], drag: 0.93, delay: kind === 'yes' ? [0.12, 0.2] : [0, 0.05] });
+    }
+    this.start();
+  }
+
+  private drawFlash(fx: Flash) {
+    const { ctx, dpr } = this;
+    const t = fx.age / fx.life;
+    const yes = fx.kind === 'yes';
+    const reach = Math.hypot(this.width, this.height);
+
+    // 1. A wash of warm light from the origin.
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.globalAlpha = this.reduced ? keyframe(t, [0, 0.4, 1], [0, 0.7, 0]) : yes ? keyframe(t, [0, 0.25, 0.5, 1], [0, 0.35, 1, 0]) : keyframe(t, [0, 0.4, 1], [0, 0.85, 0]);
+    const wash = ctx.createRadialGradient(fx.x, fx.y, 0, fx.x, fx.y, reach);
+    const stops: Array<[number, string]> = yes
+      ? [[0, '#FFF8F5'], [0.22, 'rgba(255,229,160,0.95)'], [0.55, 'rgba(255,130,178,0.92)'], [1, 'rgba(240,68,104,0.85)']]
+      : [[0, 'rgba(255,225,234,0.95)'], [0.3, 'rgba(255,130,178,0.75)'], [0.65, 'rgba(240,68,104,0.35)'], [1, 'rgba(240,68,104,0)']];
+    for (const [at, color] of stops) wash.addColorStop(at, color);
+    ctx.fillStyle = wash;
+    ctx.fillRect(0, 0, this.width, this.height);
+    if (this.reduced) return;
+
+    // 2. Rotating light rays (YES only).
+    if (yes) {
+      const radius = reach * (0.5 + t * 0.7);
+      ctx.globalAlpha = keyframe(t, [0, 0.3, 1], [0, 0.85, 0]);
+      ctx.setTransform(dpr, 0, 0, dpr, dpr * fx.x, dpr * fx.y);
+      ctx.rotate(t * 0.7);
+      const beams = ctx.createRadialGradient(0, 0, 0, 0, 0, radius);
+      beams.addColorStop(0, 'rgba(255,248,245,0.7)');
+      beams.addColorStop(1, 'rgba(255,248,245,0)');
+      ctx.fillStyle = beams;
+      ctx.beginPath();
+      for (let i = 0; i < 24; i += 1) {
+        const a = (i / 24) * Math.PI * 2;
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, radius, a, a + 0.11);
+        ctx.closePath();
+      }
+      ctx.fill();
+    }
+
+    // 3. A heart that blooms toward the viewer until it fills the screen.
+    const p = Math.min(t / 0.85, 1);
+    const eased = p * p * p;
+    const size = yes ? (p < 0.35 ? 14 + (140 - 14) * (p / 0.35) : 140 + (140 * 22 - 140) * ((p - 0.35) / 0.65) ** 3) : 14 + (140 * 14 - 14) * eased;
+    ctx.globalAlpha = yes ? keyframe(p, [0, 0.35, 1], [0, 1, 0]) : keyframe(p, [0, 1], [0.95, 0]);
+    const k = size / 100;
+    ctx.setTransform(dpr * k, 0, 0, dpr * k, dpr * fx.x, dpr * fx.y);
+    const fill = ctx.createLinearGradient(-35, -40, 35, 40);
+    fill.addColorStop(0, yes ? '#FFE1EA' : '#FFB3CF');
+    fill.addColorStop(1, yes ? '#FF5C8A' : '#F04468');
+    ctx.fillStyle = fill;
+    ctx.fill(heartPath2D());
+  }
+
   private tick = (now: number) => {
     const dt = Math.min((now - this.last) / 1000, 0.05);
     this.last = now;
     const { ctx, dpr } = this;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    this.flashes = this.flashes.filter((fx) => {
+      fx.age += dt;
+      if (fx.age >= fx.life) return false;
+      this.drawFlash(fx);
+      return true;
+    });
 
     const alive: Particle[] = [];
     const expired: Particle[] = [];
@@ -582,7 +682,7 @@ export class ParticleEngine {
       this.add('sparkle', pick(this.palette.sparkles), { x: t.x + rand(-3, 3), y: t.y, vx: rand(-20, 20), vy: rand(10, 50), size: rand(6, 11), life: rand(0.3, 0.55), spin: 0 });
     }
     for (const p of expired) p.onExpire?.(p);
-    if (this.particles.length > 0) {
+    if (this.particles.length > 0 || this.flashes.length > 0) {
       this.frame = requestAnimationFrame(this.tick);
     } else {
       this.frame = 0;

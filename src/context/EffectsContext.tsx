@@ -1,18 +1,10 @@
-import { createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from 'react';
-import type { BurstOptions, BurstPreset, Origin, ParticleEngine } from '../utils/particles';
-
-export type FlashKind = 'hearts' | 'yes';
-
-export interface Flash {
-  id: number;
-  kind: FlashKind;
-  origin: Origin;
-}
+import { createContext, useContext, useMemo, useRef, type ReactNode } from 'react';
+import type { BurstOptions, BurstPreset, FlashKind, Origin, ParticleEngine } from '../utils/particles';
 
 interface EffectsApi {
   /** Fire a particle burst from a point or from the centre of an element. */
   burst: (preset: BurstPreset, target: Origin | Element | null | undefined, options?: BurstOptions) => void;
-  /** Full-screen transition flash (expanding hearts + light). */
+  /** Full-screen transition flash (light wash + a heart blooming toward the viewer), drawn on the particle canvas. */
   flash: (kind: FlashKind, target?: Origin | Element | null) => void;
   /** A short camera shake for big moments (skipped for reduced motion). */
   shake: () => void;
@@ -23,9 +15,6 @@ interface EffectsApi {
 }
 
 const EffectsContext = createContext<EffectsApi | null>(null);
-const FlashContext = createContext<Flash[]>([]);
-
-export const FLASH_DURATION: Record<FlashKind, number> = { hearts: 1300, yes: 1900 };
 
 export function centerOf(target: Origin | Element | null | undefined): Origin {
   if (!target) return { x: window.innerWidth / 2, y: window.innerHeight / 2 };
@@ -38,60 +27,39 @@ export function centerOf(target: Origin | Element | null | undefined): Origin {
 
 export function EffectsProvider({ children }: { children: ReactNode }) {
   const engineRef = useRef<ParticleEngine | null>(null);
-  const timers = useRef(new Set<number>());
-  const nextId = useRef(0);
-  const [flashes, setFlashes] = useState<Flash[]>([]);
-
-  const flash = useCallback((kind: FlashKind, target?: Origin | Element | null) => {
-    const id = (nextId.current += 1);
-    setFlashes((list) => [...list, { id, kind, origin: centerOf(target) }]);
-    const timer = window.setTimeout(() => {
-      timers.current.delete(timer);
-      setFlashes((list) => list.filter((item) => item.id !== id));
-    }, FLASH_DURATION[kind]);
-    timers.current.add(timer);
-  }, []);
+  const shakeTimer = useRef(0);
 
   const api = useMemo<EffectsApi>(
     () => ({
       burst: (preset, target, options) => engineRef.current?.burst(preset, centerOf(target), options),
-      flash,
+      flash: (kind, target) => engineRef.current?.flash(kind, centerOf(target)),
       shake: () => {
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         const root = document.documentElement;
         root.classList.remove('is-shaking');
         void root.offsetWidth;
         root.classList.add('is-shaking');
-        const timer = window.setTimeout(() => root.classList.remove('is-shaking'), 700);
-        timers.current.add(timer);
+        window.clearTimeout(shakeTimer.current);
+        shakeTimer.current = window.setTimeout(() => root.classList.remove('is-shaking'), 700);
       },
       clear: () => {
         engineRef.current?.clear();
-        timers.current.forEach((timer) => window.clearTimeout(timer));
-        timers.current.clear();
-        setFlashes([]);
+        window.clearTimeout(shakeTimer.current);
+        document.documentElement.classList.remove('is-shaking');
       },
       registerEngine: (engine) => {
         engineRef.current = engine;
       },
       isBusy: () => engineRef.current?.busy ?? false,
     }),
-    [flash],
+    [],
   );
 
-  return (
-    <EffectsContext.Provider value={api}>
-      <FlashContext.Provider value={flashes}>{children}</FlashContext.Provider>
-    </EffectsContext.Provider>
-  );
+  return <EffectsContext.Provider value={api}>{children}</EffectsContext.Provider>;
 }
 
 export function useEffects() {
   const value = useContext(EffectsContext);
   if (!value) throw new Error('useEffects must be used inside <EffectsProvider>');
   return value;
-}
-
-export function useFlashes() {
-  return useContext(FlashContext);
 }

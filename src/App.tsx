@@ -10,7 +10,6 @@ import { Constellation } from './components/background/Constellation';
 import { AudioToggle } from './components/AudioToggle';
 import { CursorGlow } from './components/CursorGlow';
 import { ParticleCanvas } from './components/ParticleCanvas';
-import { TransitionFlash } from './components/TransitionFlash';
 import { useMotionPreferences } from './hooks/useReducedMotion';
 import { usePageVisibility } from './hooks/usePageVisibility';
 import { EnvelopeScene } from './scenes/EnvelopeScene';
@@ -137,7 +136,6 @@ function Experience() {
 
       {finePointer && !reduced && valentineConfig.features.cursorEffects && <CursorGlow />}
       <ParticleCanvas reduced={reduced} compact={compact} />
-      <TransitionFlash />
     </>
   );
 }
