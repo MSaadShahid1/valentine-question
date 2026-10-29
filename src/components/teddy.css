@@ -1,0 +1,213 @@
+.teddy {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 400 / 460;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.teddy svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.teddy__float {
+  width: 100%;
+  height: 100%;
+  animation: teddy-float 5.2s ease-in-out infinite;
+  transform-origin: 50% 100%;
+}
+
+/* Only CSS-animated parts get a fill-box origin; elements positioned with SVG
+   transform attributes must keep the default view-box reference. */
+.teddy__shadow,
+.teddy__glow,
+.teddy__body,
+.teddy__heart,
+.teddy__head,
+.teddy__eye,
+.teddy__cheeks,
+.teddy__twinkle,
+.teddy__sweat,
+.teddy__tear {
+  transform-box: fill-box;
+}
+
+.teddy__shadow {
+  transform-origin: center;
+  animation: teddy-shadow 5.2s ease-in-out infinite;
+}
+
+.teddy__glow {
+  transform-origin: center;
+  animation: glow-pulse 3.2s ease-in-out infinite;
+  transition: opacity 0.6s var(--ease-out);
+}
+
+.teddy__body {
+  transform-origin: 50% 100%;
+  animation: teddy-breathe 4.2s ease-in-out infinite;
+}
+
+.teddy__heart {
+  transform-origin: center;
+  animation: heartbeat 1.9s ease-in-out infinite;
+}
+
+.teddy__head {
+  transform-origin: 50% 95%;
+}
+
+.teddy__eye {
+  transform-origin: center;
+  animation: teddy-blink 5.4s infinite;
+}
+
+.teddy__cheeks {
+  opacity: 0.75;
+  transform-origin: center;
+  transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-spring);
+}
+
+.teddy__twinkle {
+  transform-origin: center;
+  animation: twinkle 1.8s ease-in-out infinite;
+}
+
+.teddy__sweat {
+  animation: teddy-sweat 1.4s ease-in infinite;
+}
+
+.teddy__tear {
+  animation: teddy-tear 1.1s ease-in infinite;
+}
+
+.teddy__tear--1 {
+  animation-delay: 0.45s;
+}
+
+/* ── Moods ────────────────────────────────────────────────────────────── */
+
+.teddy--hopeful .teddy__heart {
+  animation-duration: 0.95s;
+}
+
+.teddy--hopeful .teddy__cheeks,
+.teddy--amazed .teddy__cheeks,
+.teddy--celebrate .teddy__cheeks {
+  opacity: 1;
+  transform: scale(1.12);
+}
+
+.teddy--nervous .teddy__head {
+  animation: teddy-tremble 0.28s linear infinite;
+}
+
+.teddy--nervous .teddy__cheeks {
+  opacity: 0.95;
+}
+
+.teddy--dramatic .teddy__float {
+  animation: teddy-dramatic 1.3s ease-in-out infinite;
+}
+
+.teddy--amazed .teddy__float {
+  animation: teddy-amazed 0.7s var(--ease-spring) both;
+}
+
+.teddy--amazed .teddy__heart,
+.teddy--celebrate .teddy__heart {
+  animation-duration: 0.75s;
+}
+
+.teddy--amazed .teddy__glow,
+.teddy--celebrate .teddy__glow {
+  animation-duration: 1.2s;
+}
+
+.teddy--celebrate .teddy__float {
+  animation: teddy-hop 0.95s ease-in-out infinite;
+}
+
+.teddy--celebrate .teddy__head {
+  animation: teddy-bop 0.95s ease-in-out infinite;
+}
+
+.teddy--sad .teddy__cheeks {
+  opacity: 0.45;
+}
+
+.teddy--sad .teddy__float {
+  animation-duration: 7s;
+}
+
+/* ── Keyframes ────────────────────────────────────────────────────────── */
+
+@keyframes teddy-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-9px) rotate(0.8deg); }
+}
+
+@keyframes teddy-shadow {
+  0%, 100% { transform: scaleX(1); opacity: 1; }
+  50% { transform: scaleX(0.9); opacity: 0.7; }
+}
+
+@keyframes teddy-breathe {
+  0%, 100% { transform: scale(1, 1); }
+  50% { transform: scale(1.012, 1.026); }
+}
+
+@keyframes teddy-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  94% { transform: scaleY(0.08); }
+  96% { transform: scaleY(1); }
+}
+
+@keyframes teddy-tremble {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(-1.2px, 0.4px) rotate(-0.6deg); }
+  75% { transform: translate(1.2px, -0.4px) rotate(0.6deg); }
+}
+
+@keyframes teddy-dramatic {
+  0%, 100% { transform: rotate(-3deg) translateY(0); }
+  50% { transform: rotate(3deg) translateY(-6px); }
+}
+
+@keyframes teddy-amazed {
+  0% { transform: scale(1) translateY(0); }
+  45% { transform: scale(1.12) translateY(-18px); }
+  100% { transform: scale(1.06) translateY(-8px); }
+}
+
+@keyframes teddy-hop {
+  0%, 100% { transform: translateY(0) scale(1.02, 0.97) rotate(0deg); }
+  20% { transform: translateY(-4px) scale(0.98, 1.03) rotate(-3deg); }
+  45% { transform: translateY(-30px) scale(0.99, 1.02) rotate(2deg); }
+  70% { transform: translateY(-6px) scale(1, 1) rotate(3deg); }
+}
+
+@keyframes teddy-bop {
+  0%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(-6deg); }
+  70% { transform: rotate(6deg); }
+}
+
+@keyframes teddy-sweat {
+  0% { transform: translateY(-6px); opacity: 0; }
+  25% { opacity: 1; }
+  100% { transform: translateY(16px); opacity: 0; }
+}
+
+@keyframes teddy-tear {
+  0% { transform: translateY(0) scale(0.6); opacity: 0; }
+  20% { opacity: 1; transform: translateY(4px) scale(1); }
+  100% { transform: translateY(58px) scale(0.9); opacity: 0; }
+}
+
+/* On the luminous celebration sky the ground shadow becomes a warm rose tint. */
+.teddy--on-light .teddy__shadow {
+  fill: rgba(140, 30, 70, 0.18);
+}

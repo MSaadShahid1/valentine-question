@@ -1,0 +1,27 @@
+.constellation {
+  position: fixed;
+  left: 50%;
+  top: 44%;
+  z-index: 5;
+  width: min(78vw, 56vh, 460px);
+  aspect-ratio: 1;
+  translate: -50% -58%;
+  pointer-events: none;
+}
+
+.constellation svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.constellation__star {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: constellation-twinkle 3.4s ease-in-out infinite;
+}
+
+@keyframes constellation-twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}

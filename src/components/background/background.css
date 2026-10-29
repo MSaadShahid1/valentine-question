@@ -1,0 +1,268 @@
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-bg);
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--plum-deep);
+}
+
+.bg > * {
+  position: absolute;
+  inset: 0;
+}
+
+/* ── Mood gradients (cross-faded) ─────────────────────────────────────── */
+
+.bg__base {
+  opacity: 0;
+  transition: opacity 1.8s var(--ease-in-out);
+}
+
+.bg__base--night {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 46%, rgba(92, 16, 45, 0.55), transparent 70%),
+    radial-gradient(ellipse 120% 90% at 50% 120%, #2a0c2a, transparent 60%),
+    linear-gradient(180deg, #0d0512 0%, var(--plum) 55%, #1f0b22 100%);
+}
+
+.bg__base--dusk {
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 20%, rgba(201, 167, 255, 0.16), transparent 60%),
+    radial-gradient(ellipse 90% 70% at 30% 85%, rgba(240, 68, 104, 0.22), transparent 65%),
+    radial-gradient(ellipse 120% 80% at 50% 50%, var(--burgundy) 0%, #2b0d2c 50%, var(--plum) 100%);
+}
+
+.bg__base--dawn {
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 30%, rgba(255, 248, 245, 0.85), transparent 70%),
+    linear-gradient(175deg, #ffc5d6 0%, #ffa3c4 30%, #ffb5a2 66%, #ffe2a6 100%);
+}
+
+.bg[data-mood='night'] .bg__base--night,
+.bg[data-mood='dusk'] .bg__base--dusk,
+.bg[data-mood='dawn'] .bg__base--dawn {
+  opacity: 1;
+}
+
+/* ── Light sources ────────────────────────────────────────────────────── */
+
+.bg__lights {
+  inset: -8%;
+}
+
+.bg__lights-set {
+  position: absolute;
+  inset: 0;
+  transition: opacity 1.8s var(--ease-in-out);
+}
+
+.bg__lights-set--dawn {
+  opacity: 0;
+}
+
+.bg[data-mood='dawn'] .bg__lights-set--night {
+  opacity: 0;
+}
+
+.bg[data-mood='dawn'] .bg__lights-set--dawn {
+  opacity: 1;
+}
+
+.bg[data-mood='night'] .bg__lights-set--night {
+  opacity: 0.55;
+}
+
+.bg__blob {
+  position: absolute;
+  border-radius: 50%;
+  animation: blob-drift 22s ease-in-out infinite;
+}
+
+.bg__blob--pink {
+  width: 55vmax;
+  height: 55vmax;
+  left: -12%;
+  top: 8%;
+  background: radial-gradient(circle, rgba(255, 130, 178, 0.32), transparent 65%);
+}
+
+.bg__blob--lavender {
+  width: 50vmax;
+  height: 50vmax;
+  right: -14%;
+  top: -12%;
+  background: radial-gradient(circle, rgba(201, 167, 255, 0.26), transparent 65%);
+  animation-duration: 28s;
+  animation-delay: -6s;
+}
+
+.bg__blob--crimson {
+  width: 60vmax;
+  height: 60vmax;
+  right: -10%;
+  bottom: -30%;
+  background: radial-gradient(circle, rgba(240, 68, 104, 0.3), transparent 65%);
+  animation-duration: 32s;
+  animation-delay: -12s;
+}
+
+.bg__blob--core {
+  width: 46vmax;
+  height: 46vmax;
+  left: 50%;
+  top: 50%;
+  margin: -23vmax 0 0 -23vmax;
+  background: radial-gradient(circle, rgba(255, 130, 178, 0.22), transparent 62%);
+  animation: glow-pulse 7s ease-in-out infinite;
+}
+
+.bg__blob--sun {
+  width: 70vmax;
+  height: 70vmax;
+  left: 50%;
+  top: -18%;
+  margin-left: -35vmax;
+  background: radial-gradient(circle, rgba(255, 248, 245, 0.95), rgba(255, 229, 160, 0.35) 35%, transparent 65%);
+  animation: glow-pulse 9s ease-in-out infinite;
+}
+
+.bg__blob--peach {
+  width: 55vmax;
+  height: 55vmax;
+  left: -18%;
+  bottom: -20%;
+  background: radial-gradient(circle, rgba(255, 181, 140, 0.55), transparent 65%);
+}
+
+.bg__blob--rose {
+  width: 50vmax;
+  height: 50vmax;
+  right: -16%;
+  top: 30%;
+  background: radial-gradient(circle, rgba(255, 92, 138, 0.35), transparent 65%);
+  animation-duration: 30s;
+}
+
+.bg__rays {
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  width: 160vmax;
+  height: 160vmax;
+  margin: -80vmax 0 0 -80vmax;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 255, 255, 0.16) 0deg 5deg, transparent 5deg 18deg);
+  -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 55%);
+  mask-image: radial-gradient(circle, #000 0%, transparent 55%);
+  animation: spin-slow 120s linear infinite;
+}
+
+/* ── Stars ────────────────────────────────────────────────────────────── */
+
+.bg__stars {
+  width: 100%;
+  height: 100%;
+  transition: opacity 1.8s var(--ease-in-out);
+}
+
+.bg[data-mood='dawn'] .bg__stars {
+  opacity: 0.18;
+}
+
+/* ── Haze / clouds ────────────────────────────────────────────────────── */
+
+.bg__cloud {
+  position: absolute;
+  border-radius: 50%;
+  animation: drift-x 40s ease-in-out infinite;
+  transition: opacity 1.8s var(--ease-in-out);
+}
+
+.bg__cloud--1 {
+  width: 90vw;
+  height: 32vh;
+  left: -20vw;
+  bottom: -10vh;
+  background: radial-gradient(ellipse, rgba(201, 167, 255, 0.14), transparent 70%);
+}
+
+.bg__cloud--2 {
+  width: 80vw;
+  height: 28vh;
+  right: -25vw;
+  bottom: 4vh;
+  background: radial-gradient(ellipse, rgba(255, 130, 178, 0.13), transparent 70%);
+  animation-duration: 52s;
+  animation-direction: reverse;
+}
+
+.bg__cloud--3 {
+  width: 70vw;
+  height: 24vh;
+  left: 10vw;
+  top: -8vh;
+  background: radial-gradient(ellipse, rgba(255, 225, 234, 0.07), transparent 70%);
+  animation-duration: 60s;
+}
+
+.bg[data-mood='dawn'] .bg__cloud--1 {
+  background: radial-gradient(ellipse, rgba(255, 255, 255, 0.55), transparent 70%);
+}
+
+.bg[data-mood='dawn'] .bg__cloud--2 {
+  background: radial-gradient(ellipse, rgba(255, 240, 220, 0.5), transparent 70%);
+}
+
+/* ── Floating hearts ──────────────────────────────────────────────────── */
+
+.bg__heart-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.float-heart {
+  position: absolute;
+  bottom: -60px;
+  opacity: 0;
+  will-change: transform;
+  animation: heart-rise var(--dur) linear var(--delay) infinite;
+}
+
+.float-heart svg {
+  width: 100%;
+  height: 100%;
+}
+
+.float-heart--static {
+  bottom: auto;
+  opacity: var(--alpha);
+  animation: none;
+  transform: rotate(var(--rot));
+}
+
+.bg[data-mood='dawn'] .float-heart {
+  filter: saturate(0.6) brightness(1.5);
+}
+
+.bg[data-frozen] .float-heart,
+.bg[data-frozen] .bg__blob,
+.bg[data-frozen] .bg__cloud {
+  animation-play-state: paused;
+}
+
+/* ── Texture ──────────────────────────────────────────────────────────── */
+
+.bg__grain {
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+.bg__vignette {
+  background: radial-gradient(ellipse 85% 75% at 50% 50%, transparent 55%, rgba(8, 2, 12, 0.72) 100%);
+  transition: opacity 1.8s var(--ease-in-out);
+}
+
+.bg[data-mood='dawn'] .bg__vignette {
+  opacity: 0.18;
+}

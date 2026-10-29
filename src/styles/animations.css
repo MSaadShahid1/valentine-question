@@ -1,0 +1,94 @@
+/* Shared keyframes for ambient motion. Component-specific choreography lives with each component. */
+
+@keyframes float-soft {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(0, -10px, 0) rotate(0.6deg); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.7) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(45deg); }
+}
+
+@keyframes heart-rise {
+  0% { transform: translate3d(0, 0, 0) rotate(var(--rot)); opacity: 0; }
+  8% { opacity: var(--alpha); }
+  85% { opacity: var(--alpha); }
+  100% { transform: translate3d(var(--drift), calc(-100vh - 160px), 0) rotate(calc(var(--rot) * -1)); opacity: 0; }
+}
+
+@keyframes drift-x {
+  0%, 100% { transform: translate3d(-4%, 0, 0); }
+  50% { transform: translate3d(4%, -2%, 0); }
+}
+
+@keyframes blob-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(4%, -3%, 0) scale(1.08); }
+  66% { transform: translate3d(-3%, 2%, 0) scale(0.96); }
+}
+
+@keyframes shine-sweep {
+  0%, 55% { transform: translateX(-130%) skewX(-20deg); }
+  85%, 100% { transform: translateX(230%) skewX(-20deg); }
+}
+
+@keyframes gradient-pan {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.07); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.045); }
+  70% { transform: scale(1); }
+}
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+@keyframes screen-shake {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  12% { transform: translate3d(-9px, 5px, 0) rotate(-0.4deg); }
+  26% { transform: translate3d(8px, -6px, 0) rotate(0.4deg); }
+  40% { transform: translate3d(-6px, -3px, 0); }
+  55% { transform: translate3d(5px, 4px, 0); }
+  70% { transform: translate3d(-3px, 2px, 0); }
+  85% { transform: translate3d(2px, -1px, 0); }
+}
+
+.is-shaking .experience {
+  animation: screen-shake 0.65s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+/* Background tab: let every ambient loop rest. */
+html[data-page-hidden] *,
+html[data-page-hidden] *::before,
+html[data-page-hidden] *::after {
+  animation-play-state: paused !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.18s !important;
+    scroll-behavior: auto !important;
+  }
+}

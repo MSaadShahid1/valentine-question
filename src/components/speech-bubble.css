@@ -1,0 +1,71 @@
+.speech {
+  position: absolute;
+  z-index: 2;
+  width: max-content;
+  max-width: min(230px, 70vw);
+  padding: 9px 14px;
+  border-radius: 16px;
+  background: var(--ivory);
+  color: var(--ink);
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  white-space: normal;
+  text-wrap: balance;
+  pointer-events: none;
+  box-shadow: 0 12px 28px -12px rgba(23, 10, 32, 0.8), 0 0 0 1px rgba(255, 130, 178, 0.35);
+}
+
+.speech::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: inherit;
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+
+.speech--above {
+  bottom: calc(100% + 14px);
+  transform-origin: 50% 100%;
+}
+
+.speech--above::after {
+  bottom: -5px;
+}
+
+.speech--below {
+  top: calc(100% + 14px);
+  transform-origin: 50% 0%;
+}
+
+.speech--below::after {
+  top: -5px;
+}
+
+.speech--center {
+  left: 50%;
+  translate: -50% 0;
+}
+
+.speech--center::after {
+  left: calc(50% - 6px);
+}
+
+.speech--start {
+  left: 0;
+}
+
+.speech--start::after {
+  left: 22px;
+}
+
+.speech--end {
+  right: 0;
+}
+
+.speech--end::after {
+  right: 22px;
+}

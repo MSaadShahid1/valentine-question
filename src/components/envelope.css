@@ -1,0 +1,267 @@
+.envelope {
+  --w: min(360px, 78vw, 46svh);
+  position: relative;
+  display: block;
+  width: var(--w);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.envelope:disabled {
+  cursor: default;
+}
+
+.envelope:focus-visible {
+  outline: none;
+}
+
+.envelope:focus-visible .envelope__body {
+  outline: 2px solid var(--ivory);
+  outline-offset: 12px;
+  border-radius: 16px;
+}
+
+.envelope__defs {
+  position: absolute;
+}
+
+.envelope__body {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 300 / 196;
+  filter: drop-shadow(0 26px 30px rgba(5, 0, 10, 0.55)) drop-shadow(0 0 40px rgba(255, 130, 178, 0.22));
+}
+
+.envelope[data-state='closed'] .envelope__body {
+  animation: envelope-float 4.6s ease-in-out infinite;
+}
+
+.envelope[data-state='opening'] .envelope__body {
+  animation: envelope-pop 0.5s var(--ease-spring) both;
+}
+
+.envelope__body > span,
+.envelope__body > svg:not(.envelope__defs) {
+  position: absolute;
+  display: block;
+}
+
+/* Inside of the envelope, visible once the flap lifts. */
+.envelope__back {
+  inset: 0;
+  z-index: 0;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #7a1840, #b13a63 60%, #e98aaa);
+}
+
+/* ── Letter ───────────────────────────────────────────────────────────── */
+
+.envelope__letter {
+  left: 7%;
+  right: 7%;
+  top: 6%;
+  height: 86%;
+  z-index: 2;
+  padding: 9% 9% 0;
+  border-radius: 6px;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 22px, rgba(240, 68, 104, 0.06) 22px 23px),
+    linear-gradient(170deg, #fffdfb, var(--ivory) 60%, #fbe9ee);
+  box-shadow: 0 -4px 12px rgba(92, 16, 45, 0.18);
+  transition: transform 1s var(--ease-out) 0.95s;
+}
+
+.envelope[data-state='opening'] .envelope__letter {
+  transform: translateY(-60%);
+}
+
+.envelope__letter-label {
+  display: block;
+  margin-bottom: 8%;
+  color: var(--crimson);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(0.9rem, calc(var(--w) * 0.06), 1.3rem);
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.envelope__letter-line {
+  display: block;
+  height: 3px;
+  margin-bottom: 7%;
+  border-radius: 3px;
+  background: rgba(92, 16, 45, 0.14);
+}
+
+.envelope__letter-line--short {
+  width: 55%;
+}
+
+/* ── Glowing heart that escapes when the letter opens ─────────────────── */
+
+.envelope__glow-heart {
+  left: 50%;
+  top: 34%;
+  z-index: 2;
+  width: 24%;
+  aspect-ratio: 1;
+  margin-left: -12%;
+  opacity: 0;
+  filter: drop-shadow(0 0 18px rgba(255, 130, 178, 0.95));
+}
+
+.envelope__glow-heart svg {
+  width: 100%;
+  height: 100%;
+}
+
+.envelope[data-state='opening'] .envelope__glow-heart {
+  animation: envelope-heart-rise 1.6s var(--ease-out) 0.7s both;
+}
+
+/* ── Front pocket ─────────────────────────────────────────────────────── */
+
+.envelope__pocket {
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Flap ─────────────────────────────────────────────────────────────── */
+
+.envelope__flap {
+  left: 0;
+  top: 0;
+  z-index: 4;
+  width: 100%;
+  height: 63%;
+  transform-origin: 50% 0%;
+  transform-style: preserve-3d;
+  transform: perspective(900px) rotateX(0deg);
+  transition:
+    transform 0.8s var(--ease-in-out) 0.25s,
+    z-index 0s linear 0.62s;
+}
+
+.envelope__flap-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.envelope__flap-face--inside {
+  transform: rotateX(180deg);
+}
+
+.envelope[data-state='closed']:hover .envelope__flap {
+  transform: perspective(900px) rotateX(18deg);
+  transition-delay: 0s;
+}
+
+.envelope[data-state='opening'] .envelope__flap {
+  z-index: 1;
+  transform: perspective(900px) rotateX(180deg);
+}
+
+/* ── Wax seal ─────────────────────────────────────────────────────────── */
+
+.envelope__seal {
+  left: 50%;
+  top: 57%;
+  z-index: 5;
+  width: 23%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  filter: drop-shadow(0 6px 8px rgba(92, 16, 45, 0.45));
+  transition: filter 0.4s var(--ease-out), scale 0.4s var(--ease-spring);
+}
+
+.envelope__seal svg {
+  width: 100%;
+  height: 100%;
+}
+
+.envelope[data-state='closed']:hover .envelope__seal,
+.envelope:focus-visible .envelope__seal {
+  scale: 1.06;
+  filter: drop-shadow(0 6px 8px rgba(92, 16, 45, 0.45)) drop-shadow(0 0 14px rgba(255, 130, 178, 0.9));
+}
+
+.envelope[data-state='opening'] .envelope__seal {
+  animation: envelope-seal-break 0.65s var(--ease-out) both;
+}
+
+/* ── Ambient sparkles + ground shadow ─────────────────────────────────── */
+
+.envelope__sparkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.envelope__sparkle {
+  position: absolute;
+  display: block;
+  color: var(--gold);
+  filter: drop-shadow(0 0 6px rgba(255, 229, 160, 0.9));
+  animation: twinkle 2.6s ease-in-out infinite;
+}
+
+.envelope__shadow {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: -16%;
+  display: block;
+  height: 12%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(5, 0, 10, 0.55), transparent 70%);
+  animation: envelope-shadow 4.6s ease-in-out infinite;
+}
+
+.envelope[data-state='opening'] .envelope__sparkles,
+.envelope[data-state='opening'] .envelope__shadow {
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+
+@keyframes envelope-float {
+  0%, 100% { transform: translateY(0) rotate(-1.2deg); }
+  50% { transform: translateY(-12px) rotate(1deg); }
+}
+
+@keyframes envelope-shadow {
+  0%, 100% { transform: scaleX(1); opacity: 1; }
+  50% { transform: scaleX(0.86); opacity: 0.65; }
+}
+
+@keyframes envelope-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(0.95); }
+  100% { transform: scale(1.03); }
+}
+
+@keyframes envelope-seal-break {
+  0% { scale: 1; opacity: 1; filter: drop-shadow(0 0 0 rgba(255, 130, 178, 0)); }
+  35% { scale: 1.28; opacity: 1; filter: drop-shadow(0 0 22px rgba(255, 229, 160, 1)); }
+  100% { scale: 0.2; opacity: 0; rotate: 40deg; filter: drop-shadow(0 0 22px rgba(255, 229, 160, 0)); }
+}
+
+@keyframes envelope-heart-rise {
+  0% { transform: translateY(20%) scale(0.5); opacity: 0; }
+  25% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translateY(-260%) scale(1.25); opacity: 0; }
+}

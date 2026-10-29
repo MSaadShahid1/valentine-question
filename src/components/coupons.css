@@ -1,0 +1,147 @@
+.coupons {
+  display: grid;
+  justify-items: center;
+  gap: 30px;
+  padding: clamp(56px, 9vh, 96px) 16px;
+}
+
+.coupons__intro {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.coupons__title {
+  font-size: clamp(2rem, 6.5vw, 3.2rem);
+  color: var(--burgundy);
+}
+
+.coupons__title .accent {
+  background-image: linear-gradient(100deg, var(--crimson), #b0306a 50%, var(--crimson));
+}
+
+.coupons__subtitle {
+  color: var(--ink-soft);
+}
+
+.coupons__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: 22px;
+  width: min(920px, 100%);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.coupon {
+  --tone-a: #ff9cc2;
+  --tone-b: #f04468;
+  position: relative;
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  width: 100%;
+  min-height: 132px;
+  padding: 0;
+  border: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--tone-a), var(--tone-b));
+  box-shadow: 0 22px 40px -22px rgba(92, 16, 45, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  /* Ticket notches punched out of both sides. */
+  -webkit-mask: radial-gradient(circle 11px at 0 50%, transparent 97%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 11px at 100% 50%, transparent 97%, #000) right / 51% 100% no-repeat;
+  mask: radial-gradient(circle 11px at 0 50%, transparent 97%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 11px at 100% 50%, transparent 97%, #000) right / 51% 100% no-repeat;
+}
+
+.coupon--1 {
+  --tone-a: #d9c2ff;
+  --tone-b: #8f62e8;
+}
+
+.coupon--2 {
+  --tone-a: #ffd8a8;
+  --tone-b: #ff7a8a;
+}
+
+.coupon--3 {
+  --tone-a: #ffb3cf;
+  --tone-b: #b0306a;
+}
+
+.coupon:focus-visible {
+  outline: 3px solid var(--burgundy);
+  outline-offset: -3px;
+}
+
+.coupon__stub {
+  display: grid;
+  place-items: center;
+  border-right: 2px dashed rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.coupon__emoji {
+  font-size: 2.4rem;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.25));
+}
+
+.coupon__body {
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  padding: 16px 24px 16px 18px;
+}
+
+.coupon__kicker {
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.coupon__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.32rem;
+  line-height: 1.15;
+  text-shadow: 0 2px 6px rgba(92, 16, 45, 0.35);
+}
+
+.coupon__detail {
+  font-size: 0.86rem;
+  font-weight: 600;
+  opacity: 0.92;
+}
+
+.coupon.is-claimed {
+  filter: saturate(0.8);
+}
+
+/* Stamped over the small print in the corner, so the coupon's title stays readable. */
+.coupon__stamp {
+  position: absolute;
+  right: 16px;
+  bottom: 10px;
+  padding: 5px 12px;
+  border: 3px solid var(--burgundy);
+  border-radius: 10px;
+  background: rgba(255, 248, 245, 0.88);
+  color: var(--burgundy);
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  box-shadow: 0 6px 16px -6px rgba(92, 16, 45, 0.6);
+}
+
+.coupons__count {
+  font-weight: 700;
+  color: var(--wine);
+}

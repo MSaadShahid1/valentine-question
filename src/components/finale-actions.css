@@ -1,0 +1,126 @@
+.finale {
+  display: grid;
+  justify-items: center;
+  gap: clamp(28px, 5vh, 44px);
+  padding: clamp(56px, 10vh, 100px) 16px;
+}
+
+.finale__intro {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.finale__eyebrow {
+  color: var(--wine);
+}
+
+.finale__title {
+  font-size: clamp(2rem, 6.5vw, 3.2rem);
+  color: var(--burgundy);
+}
+
+.finale__title .accent {
+  background-image: linear-gradient(100deg, var(--crimson), #b0306a 50%, var(--crimson));
+}
+
+.finale__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  justify-items: center;
+  gap: clamp(28px, 5vw, 56px);
+  width: min(980px, 100%);
+}
+
+@media (min-width: 820px) {
+  .finale__grid {
+    grid-template-columns: 0.9fr 1.1fr;
+  }
+}
+
+.finale__love {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+}
+
+.love-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(210px, 56vw, 270px);
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: 40%;
+}
+
+.love-button__heart {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 26px 30px rgba(176, 20, 74, 0.45)) drop-shadow(0 0 30px rgba(255, 130, 178, 0.55));
+  animation: heartbeat 1.8s ease-in-out infinite;
+}
+
+.love-button__label {
+  position: relative;
+  margin-top: -12%;
+  max-width: 64%;
+  color: #fff;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(1.2rem, 4.4vw, 1.45rem);
+  line-height: 1.15;
+  text-align: center;
+  text-shadow: 0 2px 8px rgba(92, 16, 45, 0.55);
+}
+
+.love-button:focus-visible {
+  outline: 2px solid var(--burgundy);
+  outline-offset: 6px;
+}
+
+.finale__note {
+  min-height: 1.5em;
+  font-weight: 700;
+  color: var(--wine);
+}
+
+.finale__surprise {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.finale__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+
+.finale__save {
+  max-width: 460px;
+  min-height: 3em;
+  margin-top: -16px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.finale__save--done {
+  color: var(--wine);
+  font-weight: 700;
+}
+
+.finale__save--error {
+  color: var(--burgundy);
+  font-weight: 700;
+}

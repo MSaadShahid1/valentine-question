@@ -1,0 +1,333 @@
+.quiz {
+  perspective: 1400px;
+}
+
+.quiz__frame {
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  width: min(760px, 100%);
+}
+
+.quiz__skip {
+  font-size: 0.82rem;
+}
+
+/* ── Progress hearts ──────────────────────────────────────────────────── */
+
+.quiz-progress {
+  display: flex;
+  gap: 10px;
+}
+
+.quiz-progress__heart {
+  display: block;
+  width: 26px;
+  height: 26px;
+}
+
+.quiz-progress__heart svg {
+  width: 100%;
+  height: 100%;
+}
+
+.quiz-progress__heart.is-done {
+  filter: drop-shadow(0 0 8px rgba(255, 130, 178, 0.9));
+}
+
+.quiz-progress__heart.is-current {
+  animation: heartbeat 1.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba(255, 225, 234, 0.7));
+}
+
+/* ── Shared card surface ──────────────────────────────────────────────── */
+
+.quiz-intro,
+.quiz-card,
+.meter {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  width: 100%;
+  padding: clamp(26px, 5vw, 44px) clamp(18px, 5vw, 44px);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 130, 178, 0.22), transparent 60%),
+    linear-gradient(150deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03));
+  border: 1px solid rgba(255, 225, 234, 0.2);
+  box-shadow: 0 40px 80px -40px rgba(5, 0, 10, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 0 80px -30px rgba(255, 130, 178, 0.6);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(140%);
+}
+
+/* ── Intro ────────────────────────────────────────────────────────────── */
+
+.quiz-intro {
+  gap: 14px;
+}
+
+.quiz-intro__teddy {
+  width: clamp(120px, 22svh, 170px);
+  margin-top: -6px;
+}
+
+.quiz-intro__title {
+  font-size: clamp(2.2rem, 7.5vw, 3.6rem);
+  color: var(--ivory);
+}
+
+.quiz-intro__text {
+  max-width: 28em;
+  margin-bottom: 8px;
+  color: var(--text-soft);
+  font-size: clamp(1rem, 3vw, 1.12rem);
+}
+
+/* ── Question card ────────────────────────────────────────────────────── */
+
+.quiz-card {
+  gap: 10px;
+}
+
+.quiz-card__count {
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--pink);
+}
+
+.quiz-card__question {
+  max-width: 18em;
+  margin-bottom: 14px;
+  font-size: clamp(1.6rem, 5.4vw, 2.5rem);
+  color: var(--ivory);
+}
+
+/* Options and the reaction pop-up share one cell, so the card always fits whichever is taller. */
+.quiz-card__stage {
+  display: grid;
+  width: 100%;
+}
+
+.quiz-card__stage > * {
+  grid-area: 1 / 1;
+}
+
+.quiz-card__options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 2.4vw, 16px);
+  width: 100%;
+}
+
+.quiz-option {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 8px;
+  min-height: clamp(104px, 18svh, 140px);
+  padding: 16px 12px;
+  border: 1px solid rgba(255, 225, 234, 0.22);
+  border-radius: 22px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
+  color: var(--blush);
+  font-weight: 700;
+  font-size: clamp(0.9rem, 2.8vw, 1.05rem);
+  line-height: 1.25;
+  cursor: pointer;
+  box-shadow: 0 16px 30px -22px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: border-color 0.3s var(--ease-out), background 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+
+.quiz-option:hover:not(:disabled) {
+  border-color: rgba(255, 130, 178, 0.8);
+  background: linear-gradient(160deg, rgba(255, 130, 178, 0.28), rgba(201, 167, 255, 0.12));
+  box-shadow: 0 20px 40px -20px rgba(240, 68, 104, 0.8), 0 0 30px -6px rgba(255, 130, 178, 0.6);
+}
+
+.quiz-option:focus-visible {
+  outline: 2px solid var(--ivory);
+  outline-offset: 3px;
+}
+
+.quiz-option:disabled {
+  cursor: default;
+}
+
+.quiz-option.is-picked {
+  border-color: rgba(255, 229, 160, 0.9);
+  background: linear-gradient(150deg, #ff9cc2, var(--crimson));
+  color: #fff;
+  box-shadow: 0 0 0 4px rgba(255, 229, 160, 0.25), 0 0 50px -4px rgba(255, 130, 178, 0.9);
+}
+
+.quiz-option__emoji {
+  font-size: clamp(2rem, 7vw, 2.6rem);
+  line-height: 1;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
+}
+
+.quiz-card__options.is-pair .quiz-option {
+  min-height: clamp(130px, 22svh, 170px);
+}
+
+/* ── Reaction pop-up ──────────────────────────────────────────────────── */
+
+.quiz-reaction {
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 12px;
+  padding: 22px 20px 24px;
+  border-radius: 28px;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 130, 178, 0.3), transparent 60%),
+    linear-gradient(160deg, var(--ivory), #ffe6ee);
+  box-shadow: 0 30px 70px -20px rgba(5, 0, 10, 0.85), 0 0 70px -10px rgba(255, 130, 178, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+}
+
+.quiz-reaction__art {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+}
+
+.quiz-reaction__teddy {
+  width: clamp(92px, 15svh, 120px);
+}
+
+.quiz-reaction__emoji {
+  display: block;
+  font-size: clamp(2.6rem, 9vw, 3.4rem);
+  line-height: 1;
+  filter: drop-shadow(0 8px 12px rgba(92, 16, 45, 0.3));
+}
+
+.quiz-reaction__text {
+  max-width: 24em;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-variation-settings: 'SOFT' 100;
+  font-size: clamp(1.15rem, 3.8vw, 1.45rem);
+  line-height: 1.35;
+  color: var(--wine);
+}
+
+/* ── Love meter ───────────────────────────────────────────────────────── */
+
+.meter {
+  gap: 14px;
+}
+
+.meter__title {
+  min-height: 2.3em;
+  display: grid;
+  place-items: center;
+  font-size: clamp(1.6rem, 5.4vw, 2.5rem);
+  color: var(--ivory);
+}
+
+.meter__heart {
+  position: relative;
+  width: min(300px, 62vw, 40svh);
+  aspect-ratio: 1;
+}
+
+.meter__heart svg {
+  width: 100%;
+  height: 100%;
+  /* The wide wave paths must not extend the scrollable area (the glow is a filter, so it still shows). */
+  overflow: hidden;
+  filter: drop-shadow(0 0 30px rgba(255, 130, 178, 0.45));
+}
+
+.meter__shell {
+  fill: rgba(255, 255, 255, 0.06);
+}
+
+.meter__outline {
+  fill: none;
+  stroke: rgba(255, 225, 234, 0.75);
+  stroke-width: 1.4;
+}
+
+.meter__wave {
+  animation: meter-wave 1.6s linear infinite;
+}
+
+.meter__wave--back {
+  animation-duration: 2.6s;
+  animation-direction: reverse;
+}
+
+.meter__value {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  translate: -50% -50%;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 9vw, 3.6rem);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+  text-shadow: 0 3px 14px rgba(92, 16, 45, 0.7);
+  white-space: nowrap;
+}
+
+.meter__value small {
+  margin-left: 2px;
+  font-size: 0.45em;
+}
+
+.meter__heart--overload {
+  animation: meter-overload 0.12s linear infinite;
+}
+
+.meter__heart--overload svg {
+  filter: drop-shadow(0 0 40px rgba(255, 229, 160, 0.95));
+}
+
+.meter__heart--final {
+  animation: heartbeat 1s ease-in-out infinite;
+}
+
+.meter__heart--final svg {
+  filter: drop-shadow(0 0 50px rgba(255, 130, 178, 1)) drop-shadow(0 0 90px rgba(255, 229, 160, 0.7));
+}
+
+.meter__heart--final .meter__value {
+  font-size: clamp(3.4rem, 13vw, 5rem);
+}
+
+.meter__final {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+}
+
+.meter__message {
+  max-width: 26em;
+  color: var(--text-soft);
+  font-size: clamp(1rem, 3vw, 1.12rem);
+}
+
+@keyframes meter-wave {
+  from { transform: translateX(0); }
+  to { transform: translateX(50px); }
+}
+
+@keyframes meter-overload {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(-3px, 2px) rotate(-1.5deg); }
+  50% { transform: translate(3px, -2px) rotate(1.5deg); }
+  75% { transform: translate(-2px, -2px) rotate(-1deg); }
+}

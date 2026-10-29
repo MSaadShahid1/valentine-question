@@ -1,0 +1,488 @@
+/* ── Intro ────────────────────────────────────────────────────────────── */
+
+.intro {
+  position: relative;
+  align-content: end;
+  padding-bottom: calc(var(--safe-bottom) + clamp(72px, 16vh, 160px));
+}
+
+.intro__glow {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: min(90vw, 680px);
+  aspect-ratio: 1;
+  margin: calc(min(90vw, 680px) / -2) 0 0 calc(min(90vw, 680px) / -2);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 130, 178, 0.28), rgba(240, 68, 104, 0.1) 40%, transparent 68%);
+  pointer-events: none;
+}
+
+.intro__teaser {
+  position: relative;
+  max-width: 18em;
+  font-size: clamp(1.45rem, 4.6vw, 2.5rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--blush);
+  text-shadow: 0 0 30px rgba(255, 130, 178, 0.45);
+}
+
+.intro__line {
+  display: block;
+  width: 120px;
+  height: 1px;
+  margin: 24px auto 0;
+  background: linear-gradient(90deg, transparent, var(--pink), transparent);
+}
+
+/* ── Envelope ─────────────────────────────────────────────────────────── */
+
+.envelope-scene {
+  position: relative;
+}
+
+.envelope-scene__light {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 55%, rgba(255, 210, 225, 0.55), rgba(255, 130, 178, 0.2) 35%, transparent 65%);
+  opacity: 0;
+  transition: opacity 1.2s var(--ease-out);
+  pointer-events: none;
+}
+
+.envelope-scene.is-bright .envelope-scene__light {
+  opacity: 1;
+}
+
+.envelope-scene__stack {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  margin-top: clamp(40px, 12vh, 120px);
+}
+
+.envelope-scene__prompt {
+  margin-top: 28px;
+  font-size: clamp(1.4rem, 4.4vw, 2.1rem);
+  font-style: italic;
+  font-weight: 500;
+  text-align: center;
+  color: var(--blush);
+  text-shadow: 0 0 24px rgba(255, 130, 178, 0.5);
+}
+
+.envelope-scene__hint {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  animation: bob 2.4s ease-in-out infinite;
+}
+
+/* ── Question ─────────────────────────────────────────────────────────── */
+
+.question-hero {
+  position: relative;
+  display: grid;
+  grid-template-areas: 'art' 'copy';
+  align-content: center;
+  justify-items: center;
+  gap: clamp(4px, 1.6svh, 18px);
+  width: 100%;
+  max-width: 1280px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: calc(var(--safe-top) + 62px) calc(var(--safe-right) + 16px) calc(var(--safe-bottom) + 20px) calc(var(--safe-left) + 16px);
+  /* Decorative glows may bleed past the edges; never let them create sideways scroll. */
+  overflow-x: clip;
+}
+
+.question-hero__art {
+  position: relative;
+  grid-area: art;
+  width: clamp(140px, 30svh, 290px);
+}
+
+.question-hero__halo {
+  position: absolute;
+  inset: -12% -10%;
+  background: radial-gradient(closest-side at 50% 58%, rgba(255, 130, 178, 0.38), rgba(201, 167, 255, 0.12) 55%, transparent 100%);
+  animation: glow-pulse 5s ease-in-out infinite;
+}
+
+.question-hero__copy {
+  position: relative;
+  grid-area: copy;
+  width: 100%;
+  max-width: 640px;
+  /* Headline sizes follow the column width (cqi), so the big line always fits its column. */
+  container-type: inline-size;
+}
+
+.question-hero__content {
+  display: grid;
+  justify-items: center;
+  gap: clamp(8px, 1.6svh, 18px);
+  text-align: center;
+  transition: opacity 0.5s var(--ease-out), filter 0.5s var(--ease-out);
+}
+
+.question.is-answered .question-hero__content {
+  opacity: 0.08;
+  filter: blur(3px);
+}
+
+.question__title {
+  display: grid;
+  gap: 0.06em;
+}
+
+.question__line {
+  display: block;
+}
+
+.question__line--small {
+  font-size: clamp(1.5rem, 5.2vw, 2.6rem);
+  font-size: clamp(1.4rem, 6.6cqi, 2.6rem);
+  font-weight: 400;
+  color: var(--blush);
+}
+
+.question__line--big {
+  font-size: clamp(2rem, 9vw, 5rem);
+  font-size: clamp(1.9rem, 14cqi, 5.4rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.question__line--ask {
+  margin-top: 0.3em;
+  font-size: clamp(1.5rem, 5.6vw, 3rem);
+  font-size: clamp(1.4rem, 7.4cqi, 3rem);
+  font-weight: 500;
+  color: var(--ivory);
+  /* A filter on the line (not text-shadow) so the glow isn't clipped by each word's reveal mask. */
+  filter: drop-shadow(0 0 22px rgba(255, 130, 178, 0.45));
+}
+
+.question__support {
+  max-width: 31em;
+  font-size: clamp(0.9rem, 2.6vw, 1.08rem);
+  color: var(--text-soft);
+}
+
+.question__choices {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px 18px;
+  margin-top: 6px;
+}
+
+.question__yes-slot {
+  position: relative;
+  z-index: 5;
+  display: inline-flex;
+}
+
+/* YES grows from its left edge up to 1.6× (1.32× on phones); this box covers that footprint. */
+.question__yes-zone {
+  position: absolute;
+  inset: -30% -60% -30% 0;
+  pointer-events: none;
+}
+
+@media (max-width: 640px), (pointer: coarse) {
+  .question__yes-zone {
+    inset: -16% -32% -16% 0;
+  }
+}
+
+.question__yes-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+/* A soft ring keeps pinging out of YES, the obvious way forward. */
+.question__yes-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgba(255, 130, 178, 0.75);
+  border-radius: 999px;
+  pointer-events: none;
+  animation: yes-ping 2.2s var(--ease-out) infinite;
+}
+
+@keyframes yes-ping {
+  0% { transform: scale(1); opacity: 0.8; }
+  70%, 100% { transform: scale(1.35, 1.6); opacity: 0; }
+}
+
+.question__yes {
+  min-width: 150px;
+  min-height: 58px;
+  font-size: 1.12rem;
+}
+
+.question__cue {
+  font-size: 0.86rem;
+}
+
+.question__cue-arrow {
+  animation: bob 2s ease-in-out infinite;
+}
+
+.yes-moment {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 0 8px;
+  font-size: clamp(2rem, 7.5vw, 4.4rem);
+  font-weight: 700;
+  line-height: 1.05;
+  text-align: center;
+  color: var(--ivory);
+  text-shadow: 0 0 40px rgba(255, 130, 178, 0.9), 0 0 90px rgba(240, 68, 104, 0.6);
+}
+
+@media (min-width: 920px) and (min-height: 600px) {
+  .question-hero {
+    grid-template-areas: 'copy art';
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    justify-items: start;
+    column-gap: clamp(24px, 4vw, 64px);
+    padding-inline: clamp(40px, 6vw, 96px);
+  }
+
+  .question-hero__art {
+    justify-self: center;
+    width: min(100%, 460px, 62vh);
+  }
+
+  .question-hero__content {
+    justify-items: start;
+    text-align: left;
+  }
+
+  .question__choices {
+    justify-content: flex-start;
+  }
+
+  .yes-moment {
+    justify-items: start;
+    text-align: left;
+  }
+}
+
+@media (max-width: 380px) {
+  .question__choices {
+    gap: 12px;
+  }
+
+  .question__choices .btn {
+    padding-inline: 1.15em;
+  }
+
+  .question__yes {
+    min-width: 124px;
+  }
+}
+
+@media (max-height: 640px) and (max-width: 919px) {
+  .question-hero__art {
+    width: clamp(120px, 24svh, 200px);
+  }
+
+  .question__support {
+    font-size: 0.86rem;
+  }
+}
+
+/* ── Celebration (luminous sunrise) ───────────────────────────────────── */
+
+.scene--celebration {
+  --text: var(--burgundy);
+  --text-soft: var(--ink-soft);
+  color: var(--ink);
+  scrollbar-color: rgba(176, 48, 106, 0.55) transparent;
+}
+
+.celebration-hero {
+  position: relative;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: clamp(6px, 1.4svh, 14px);
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: calc(var(--safe-top) + 64px) 16px calc(var(--safe-bottom) + 28px);
+  overflow: hidden;
+  text-align: center;
+}
+
+.celebration-hero__halo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(92vw, 720px, 92vh);
+  aspect-ratio: 1;
+  margin: calc(min(92vw, 720px, 92vh) / -2) 0 0 calc(min(92vw, 720px, 92vh) / -2);
+  pointer-events: none;
+}
+
+.celebration-hero__big-heart {
+  position: absolute;
+  inset: 6%;
+  width: 88%;
+  height: 88%;
+  opacity: 0.55;
+  filter: drop-shadow(0 0 60px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 120px rgba(255, 130, 178, 0.8));
+  animation: heartbeat 2.6s ease-in-out infinite;
+}
+
+.celebration-hero__rays {
+  position: absolute;
+  inset: -40%;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 255, 255, 0.4) 0deg 6deg, transparent 6deg 20deg);
+  -webkit-mask-image: radial-gradient(circle, #000 10%, transparent 62%);
+  mask-image: radial-gradient(circle, #000 10%, transparent 62%);
+  animation: spin-slow 60s linear infinite;
+}
+
+.celebration-hero__teddy {
+  position: relative;
+  width: clamp(150px, 30svh, 290px);
+}
+
+.celebration-hero__title {
+  position: relative;
+  max-width: 12em;
+  font-size: clamp(2.5rem, 10.5vw, 6.6rem);
+  font-weight: 700;
+  line-height: 0.98;
+  color: var(--burgundy);
+  filter: drop-shadow(0 2px 0 rgba(255, 255, 255, 0.6)) drop-shadow(0 0 26px rgba(255, 255, 255, 0.8));
+}
+
+/* Once revealed, the headline words keep doing a happy little wave. */
+.celebration-hero__title .split__word {
+  animation: word-bounce 2.4s ease-in-out 2.8s infinite;
+}
+
+.celebration-hero__title .split__word:nth-of-type(2) {
+  animation-delay: 2.95s;
+}
+
+.celebration-hero__title .split__word:nth-of-type(3) {
+  animation-delay: 3.1s;
+}
+
+.celebration-hero__title .split__word:nth-of-type(4) {
+  animation-delay: 3.25s;
+}
+
+@keyframes word-bounce {
+  0%, 30%, 100% { transform: translateY(0) rotate(0deg); }
+  10% { transform: translateY(-14px) rotate(-3deg); }
+  20% { transform: translateY(2px) rotate(1deg); }
+}
+
+.celebration-hero__sub {
+  position: relative;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-variation-settings: 'SOFT' 100;
+  font-size: clamp(1.35rem, 4.4vw, 2.1rem);
+  color: var(--wine);
+}
+
+.celebration-hero__status {
+  position: relative;
+  margin-top: 6px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: rgba(255, 248, 245, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 14px 30px -18px rgba(92, 16, 45, 0.6);
+  font-size: clamp(0.88rem, 2.8vw, 1rem);
+  font-weight: 800;
+  color: var(--burgundy);
+}
+
+.scroll-cue {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-top: clamp(8px, 2svh, 24px);
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--wine);
+  cursor: pointer;
+}
+
+.scroll-cue:focus-visible {
+  outline: 2px solid var(--burgundy);
+  outline-offset: 2px;
+}
+
+.scroll-cue__arrow {
+  animation: bob 1.8s ease-in-out infinite;
+}
+
+.celebration-letter {
+  display: grid;
+  justify-items: center;
+  padding: clamp(64px, 10vh, 110px) 16px 0;
+}
+
+.scene--celebration .letter__paper {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.9),
+    0 50px 90px -40px rgba(92, 16, 45, 0.55),
+    0 0 90px -20px rgba(255, 255, 255, 0.9);
+}
+
+.celebration__footer {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 24px 16px calc(var(--safe-bottom) + 56px);
+  text-align: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--wine);
+}
+
+.celebration__footer-heart {
+  width: 34px;
+  height: 34px;
+  animation: heartbeat 1.6s ease-in-out infinite;
+}
+
+/* The chrome sits on a light sky during the celebration. */
+.is-celebrating .audio-toggle {
+  background: rgba(255, 248, 245, 0.55);
+  border-color: rgba(255, 255, 255, 0.9);
+  color: var(--burgundy);
+}

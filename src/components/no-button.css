@@ -1,0 +1,80 @@
+.no-button {
+  position: relative;
+  z-index: 6;
+  display: inline-flex;
+}
+
+.no-button__btn {
+  min-width: 112px;
+  white-space: nowrap;
+  transition:
+    background-color 0.3s var(--ease-out),
+    border-color 0.3s var(--ease-out),
+    color 0.3s var(--ease-out);
+}
+
+/* Once it starts roaming over artwork, give it a solid backing so it stays legible. */
+.no-button[data-restless] .no-button__btn {
+  background: rgba(36, 11, 38, 0.82);
+  border-color: rgba(201, 167, 255, 0.55);
+}
+
+.no-button__jitter {
+  display: inline-block;
+}
+
+/* After a few escapes it can't sit still at all. */
+.no-button[data-restless] .no-button__jitter {
+  animation: no-jitter 0.9s ease-in-out infinite;
+}
+
+.no-button__face {
+  display: inline-grid;
+}
+
+.no-button__face > span {
+  grid-area: 1 / 1;
+  text-align: center;
+}
+
+.no-button__face > .is-hidden {
+  visibility: hidden;
+}
+
+.no-button__btn:disabled {
+  opacity: 0.35;
+}
+
+@keyframes no-jitter {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  20% { transform: translate(-1.5px, 1px) rotate(-3deg); }
+  40% { transform: translate(1.5px, -1px) rotate(2deg); }
+  60% { transform: translate(-1px, -1px) rotate(-2deg); }
+  80% { transform: translate(1px, 1px) rotate(3deg); }
+}
+
+.no-ghost {
+  position: fixed;
+  z-index: var(--z-overlay);
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  translate: -50% -50%;
+  pointer-events: none;
+}
+
+.no-ghost__heart {
+  width: 30px;
+  height: 30px;
+  filter: drop-shadow(0 4px 10px rgba(240, 68, 104, 0.6));
+}
+
+.no-ghost__label {
+  padding: 2px 8px;
+  border-radius: 99px;
+  background: rgba(255, 248, 245, 0.92);
+  color: var(--ink);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}

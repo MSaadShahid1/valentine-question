@@ -1,0 +1,56 @@
+.flash {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-flash);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.flash__item {
+  position: absolute;
+  inset: 0;
+}
+
+.flash__glow {
+  position: absolute;
+  inset: 0;
+}
+
+.flash__glow--hearts {
+  background: radial-gradient(circle at var(--origin), rgba(255, 225, 234, 0.95) 0%, rgba(255, 130, 178, 0.75) 30%, rgba(240, 68, 104, 0.35) 65%, transparent 100%);
+}
+
+.flash__glow--yes {
+  background: radial-gradient(circle at var(--origin), #fff8f5 0%, rgba(255, 229, 160, 0.95) 22%, rgba(255, 130, 178, 0.92) 55%, rgba(240, 68, 104, 0.85) 100%);
+}
+
+.flash__rays {
+  position: absolute;
+  width: 220vmax;
+  height: 220vmax;
+  margin: -110vmax 0 0 -110vmax;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 248, 245, 0.55) 0deg 4deg, transparent 4deg 15deg);
+  -webkit-mask-image: radial-gradient(circle, #000 5%, transparent 50%);
+  mask-image: radial-gradient(circle, #000 5%, transparent 50%);
+}
+
+.flash__heart {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  margin: -70px 0 0 -70px;
+  filter: drop-shadow(0 0 30px rgba(255, 130, 178, 0.9));
+}
+
+.flash__heart svg,
+.flash__mini svg {
+  width: 100%;
+  height: 100%;
+}
+
+.flash__mini {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+}

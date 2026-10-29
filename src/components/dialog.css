@@ -1,0 +1,65 @@
+.dialog {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-dialog);
+  display: grid;
+  place-items: center;
+  padding: calc(var(--safe-top) + 16px) 16px calc(var(--safe-bottom) + 16px);
+}
+
+.dialog__backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 45%, rgba(92, 16, 45, 0.55), rgba(13, 5, 18, 0.82));
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.dialog__panel {
+  position: relative;
+  width: min(440px, 100%);
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: 40px 28px 28px;
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 130, 178, 0.18), transparent 60%),
+    linear-gradient(160deg, var(--ivory), #ffeef3);
+  color: var(--ink);
+  text-align: center;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.7) inset,
+    0 40px 80px -30px rgba(5, 0, 10, 0.8),
+    0 0 80px -10px rgba(255, 130, 178, 0.55);
+}
+
+.dialog__panel:focus {
+  outline: none;
+}
+
+.dialog__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(92, 16, 45, 0.08);
+  color: var(--burgundy);
+  cursor: pointer;
+  transition: background-color 0.25s var(--ease-out), transform 0.25s var(--ease-spring);
+}
+
+.dialog__close:hover {
+  background: rgba(92, 16, 45, 0.15);
+  transform: rotate(90deg);
+}
+
+.dialog__close:focus-visible {
+  outline: 2px solid var(--crimson);
+  outline-offset: 2px;
+}

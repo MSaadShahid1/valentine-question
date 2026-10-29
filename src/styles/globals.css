@@ -1,0 +1,336 @@
+@import './tokens.css';
+@import './animations.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: var(--plum);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
+}
+
+img,
+svg,
+canvas {
+  display: block;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: rgba(255, 130, 178, 0.45);
+  color: #fff;
+}
+
+[tabindex='-1']:focus {
+  outline: none;
+}
+
+/* ── Scenes ───────────────────────────────────────────────────────────── */
+
+/* Full-viewport host for the scenes; it is what shakes on big moments, so it must
+   cover the viewport itself (a transformed parent becomes fixed children's frame). */
+.experience {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-scene);
+}
+
+.scene {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-scene);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 130, 178, 0.45) transparent;
+}
+
+.scene::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scene::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--pink), var(--crimson));
+  border-radius: 99px;
+}
+
+.scene::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scene__center {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: calc(var(--safe-top) + var(--chrome-height)) calc(var(--safe-right) + 16px) calc(var(--safe-bottom) + 28px)
+    calc(var(--safe-left) + 16px);
+}
+
+/* ── Typography ───────────────────────────────────────────────────────── */
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-variation-settings: 'SOFT' 100;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+}
+
+.accent {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-variation-settings: 'SOFT' 100;
+  background: linear-gradient(100deg, var(--pink) 0%, var(--gold) 38%, var(--pink) 62%, var(--lavender) 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-pan 7s ease-in-out infinite;
+  padding-inline: 0.04em 0.1em;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--pink);
+}
+
+.eyebrow::before {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, currentColor);
+}
+
+@media (max-width: 520px) {
+  .eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+  }
+
+  .eyebrow::before {
+    display: none;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Glass surfaces ───────────────────────────────────────────────────── */
+
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────── */
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55em;
+  min-height: 52px;
+  max-width: 100%;
+  padding: 0.55em 1.6em;
+  border: 0;
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  text-align: center;
+  /* Long labels wrap neatly on narrow phones instead of overflowing. */
+  text-wrap: balance;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+  isolation: isolate;
+  transition:
+    box-shadow 0.35s var(--ease-out),
+    background-color 0.35s var(--ease-out),
+    color 0.35s var(--ease-out),
+    opacity 0.35s var(--ease-out);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--ivory);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 8px rgba(255, 130, 178, 0.35);
+}
+
+.btn:disabled {
+  cursor: default;
+}
+
+.btn svg {
+  flex: none;
+}
+
+.btn--primary {
+  color: #fff;
+  background: linear-gradient(135deg, #ff9cc2 0%, var(--pink) 18%, var(--crimson) 60%, #c8235a 100%);
+  box-shadow:
+    0 14px 34px -10px rgba(240, 68, 104, 0.85),
+    0 4px 12px -4px rgba(92, 16, 45, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -2px 6px rgba(120, 10, 50, 0.35);
+  text-shadow: 0 1px 2px rgba(92, 16, 45, 0.35);
+}
+
+.btn--primary:hover {
+  box-shadow:
+    0 20px 44px -10px rgba(240, 68, 104, 0.95),
+    0 0 0 6px rgba(255, 130, 178, 0.14),
+    0 4px 12px -4px rgba(92, 16, 45, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -2px 6px rgba(120, 10, 50, 0.35);
+}
+
+.btn__shine {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.btn__shine::after {
+  content: '';
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 38%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  animation: shine-sweep 3.6s var(--ease-in-out) infinite;
+}
+
+.btn--ghost {
+  color: var(--blush);
+  background: rgba(255, 225, 234, 0.08);
+  border: 1px solid rgba(255, 225, 234, 0.26);
+  box-shadow: 0 10px 30px -16px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.btn--ghost:hover {
+  background: rgba(255, 225, 234, 0.14);
+  border-color: rgba(255, 225, 234, 0.4);
+}
+
+/* Buttons that live on the luminous celebration background. */
+.btn--light {
+  color: var(--burgundy);
+  background: rgba(255, 248, 245, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 14px 30px -16px rgba(92, 16, 45, 0.55), inset 0 1px 0 #fff;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.btn--light:hover {
+  background: rgba(255, 248, 245, 0.92);
+}
+
+.btn--light:focus-visible {
+  outline-color: var(--burgundy);
+}
+
+.btn--small {
+  min-height: 44px;
+  padding: 0.45em 1.15em;
+  font-size: 0.9rem;
+}
+
+.text-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  min-height: 44px;
+  padding: 0 0.5em;
+  border: 0;
+  background: none;
+  color: var(--text-soft);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 999px;
+  transition: color 0.25s var(--ease-out);
+}
+
+.text-button:hover {
+  color: var(--blush);
+}
+
+.text-button:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 2px;
+}

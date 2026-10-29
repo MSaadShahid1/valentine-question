@@ -1,0 +1,26 @@
+.split {
+  display: inline;
+}
+
+.split__mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* Room for italic overhangs and descenders inside the mask. */
+  padding: 0.06em 0.08em 0.14em;
+  margin: -0.06em -0.08em -0.14em;
+}
+
+.split__inner {
+  display: inline-block;
+  transform-origin: 0% 100%;
+}
+
+.split__word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.split__char {
+  display: inline-block;
+}

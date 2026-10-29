@@ -1,0 +1,49 @@
+/* Design tokens. Palette values are overridden at runtime from src/config/valentine.ts (theme). */
+:root {
+  --plum: #170a20;
+  --burgundy: #5c102d;
+  --crimson: #f04468;
+  --pink: #ff82b2;
+  --blush: #ffe1ea;
+  --ivory: #fff8f5;
+  --lavender: #c9a7ff;
+  --gold: #ffe5a0;
+
+  --plum-deep: #0d0512;
+  --wine: #8e1538;
+  --ink: #3a1430;
+  --ink-soft: rgba(58, 20, 48, 0.78);
+
+  --text: var(--blush);
+  --text-soft: rgba(255, 225, 234, 0.74);
+
+  --font-display: 'Fraunces Variable', 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Manrope Variable', 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 32px;
+
+  --glass-bg: linear-gradient(140deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.035));
+  --glass-border: rgba(255, 225, 234, 0.18);
+  --glass-shadow: 0 30px 60px -30px rgba(5, 0, 10, 0.65), 0 1px 0 rgba(255, 255, 255, 0.12) inset;
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --chrome-height: 64px;
+
+  --z-bg: 0;
+  --z-scene: 10;
+  --z-cursor: 30;
+  --z-chrome: 60;
+  --z-overlay: 70;
+  --z-dialog: 80;
+  --z-particles: 90;
+  --z-flash: 95;
+}
